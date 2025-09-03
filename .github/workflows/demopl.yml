@@ -4,10 +4,14 @@ jobs:
     firstjob:
         runs-on: ubuntu-latest
         steps:
+            - name: checkout repository
+              uses: actions/checkout@v3
+              with:
+                repository: gvkul2017-bosch/repo1
             - name: welcome message
               run: echo "hello world"
             - name: list files
               run: ls
             - name: running shell script
-              run: ../.././hello.sh
+              run: ./hello.sh
             
