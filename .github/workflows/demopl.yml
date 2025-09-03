@@ -13,4 +13,11 @@ jobs:
               run: chmod +x hello.sh
             - name: running shell script
               run: ./hello.sh
+
+    secondjob:
+     runs-on: ubuntu-latest
+     steps:
+      - name: echo hello world again
+        run: echo "hello world again again"
+
             
