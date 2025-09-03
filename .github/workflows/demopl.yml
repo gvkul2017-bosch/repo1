@@ -15,10 +15,11 @@ jobs:
               run: ./hello.sh
 
     secondjob:
-     runs-on: ubuntu-latest
-     steps:
-      - name: echo hello world again
-        run: echo "hello world again again"
+      runs-on: linuxvm1g4
+      needs: firstjob
+      steps:
+        - name: echo hello world again
+          run: echo "hello world again again"
 
             
 
