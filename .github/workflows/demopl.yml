@@ -1,0 +1,11 @@
+name: firstflow
+on: push
+jobs:
+    firstjob:
+        runs-on: ubuntu-latest
+        steps:
+            - name: welcome message
+              run: echo "hello world"
+            - name: list files
+              run: ls
+            
