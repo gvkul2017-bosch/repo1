@@ -21,5 +21,12 @@ jobs:
         - name: echo hello world again
           run: echo "hello world again again"
 
+    thirdjob:
+      runs-on: linuxvm1g4
+      needs: secondjob
+      steps:
+        - name: echo helllo wroedl
+          run: echo "helllo wroedl"
+
             
 
