@@ -1,0 +1,17 @@
+
+name: firstflow
+on: push
+jobs:
+    firstjob:
+        runs-on: linuxvm1g4
+        steps:
+            - uses: actions/checkout@v3
+            - name: welcome message
+              run: |
+                echo "hello world"
+                ls
+                chmod +x hello.sh
+                ./hello.sh
+                echo "helllo wroedl"
+
+            
