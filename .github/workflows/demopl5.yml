@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -12,3 +13,5 @@ jobs:
           stepVar1: stepvalue1
         run: |
           echo "The value for stepvar1: $stepVar1"
+      - name: echo repovar1
+        run: echo "The value for repovar1: ${{ vars.repovar1 }}"
