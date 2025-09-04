@@ -29,6 +29,6 @@ jobs:
         cancel-in-progress: false
       steps:
         - name: sleep for 600 seconds
-          run: sleep 600
+          run: sleep 6
             
 
