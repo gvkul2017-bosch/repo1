@@ -24,6 +24,9 @@ jobs:
     thirdjob:
       runs-on: ubuntu-latest
       needs: secondjob
+      concurrency:
+        group: production-deployment
+        cancel-in-progress: true
       steps:
         - name: sleep for 600 seconds
           run: sleep 600
