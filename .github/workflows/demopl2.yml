@@ -1,5 +1,5 @@
 
-name: firstflow
+name: build_flow
 on: push
 jobs:
     firstjob:
