@@ -26,9 +26,9 @@ jobs:
       needs: secondjob
       concurrency:
         group: production-deployment
-        cancel-in-progress: true
+        cancel-in-progress: false
       steps:
         - name: sleep for 600 seconds
-          run: sleep 6
+          run: sleep 600
             
 
