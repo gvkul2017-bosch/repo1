@@ -16,5 +16,4 @@ jobs:
       - name: echo repovar1
         run: "echo \"The value for repovar1: ${{ vars.repovar1 }}\""
       - name: echo REPOSEC1
-        run: "echo \"The value for reposec: ${{ secrets.repovar1 }}\""
-        
+        run: "echo \"The value for reposec: ${{ secrets.REPOSEC1}}\""        
