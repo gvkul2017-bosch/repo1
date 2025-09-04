@@ -1,1 +1,122 @@
-this is likely to be file 1
+vmadmin@linuxvm1g4:~$ sudo apt -GetUpdate
+E: Command line option 'G' [from -GetUpdate] is not understood in combination with the other options.
+vmadmin@linuxvm1g4:~$ sudo apt -get update
+E: Command line option 'g' [from -get] is not understood in combination with the other options.
+vmadmin@linuxvm1g4:~$ mkdir actions-runner && cd actions-runner
+vmadmin@linuxvm1g4:~/actions-runner$ curl -o actions-runner-linux-x64-2.328.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  216M  100  216M    0     0   201M      0  0:00:01  0:00:01 --:--:--  231M
+vmadmin@linuxvm1g4:~/actions-runner$ tar xzf ./actions-runner-linux-x64-2.328.0.tar.gz
+vmadmin@linuxvm1g4:~/actions-runner$ ./config.sh --url https://github.com/gvkul2017-bosch/repo1 --token BW3MXPIH7G7IAZL6ER2UAYTIXAV4A
+
+--------------------------------------------------------------------------------
+|        ____ _ _   _   _       _          _        _   _                      |
+|       / ___(_) |_| | | |_   _| |__      / \   ___| |_(_) ___  _ __  ___      |
+|      | |  _| | __| |_| | | | | '_ \    / _ \ / __| __| |/ _ \| '_ \/ __|     |
+|      | |_| | | |_|  _  | |_| | |_) |  / ___ \ (__| |_| | (_) | | | \__ \     |
+|       \____|_|\__|_| |_|\__,_|_.__/  /_/   \_\___|\__|_|\___/|_| |_|___/     |
+|                                                                              |
+|                       Self-hosted runner registration                        |
+|                                                                              |
+--------------------------------------------------------------------------------
+
+# Authentication
+
+
+√ Connected to GitHub
+
+# Runner Registration
+
+Enter the name of the runner group to add this runner to: [press Enter for Default]
+
+Enter the name of runner: [press Enter for linuxvm1g4]
+
+This runner will have the following labels: 'self-hosted', 'Linux', 'X64'
+Enter any additional labels (ex. label-1,label-2): [press Enter to skip] linuxvm1g4
+
+√ Runner successfully added
+√ Runner connection is good
+
+# Runner settings
+
+Enter name of work folder: [press Enter for _work]
+
+√ Settings Saved.
+
+vmadmin@linuxvm1g4:~/actions-runner$ ls
+_diag  actions-runner-linux-x64-2.328.0.tar.gz  bin  config.sh  env.sh  externals  run-helper.cmd.template  run-helper.sh.template  run.sh  safe_sleep.sh  svc.sh
+vmadmin@linuxvm1g4:~/actions-runner$ ./run.sh &
+[1] 1929
+vmadmin@linuxvm1g4:~/actions-runner$
+√ Connected to GitHub
+
+Current runner version: '2.328.0'
+2025-09-03 10:55:24Z: Listening for Jobs
+2025-09-03 10:56:42Z: Running job: firstjob
+2025-09-03 10:56:49Z: Job firstjob completed with result: Succeeded
+
+vmadmin@linuxvm1g4:~/actions-runner$ ps -ef|grep run
+root         976       1  0 10:39 ?        00:00:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root        1488    1003  0 10:39 ?        00:00:01 /usr/bin/python3 -u bin/WALinuxAgent-2.14.0.1-py3.12.egg -run-exthandlers
+vmadmin     1929    1745  0 10:55 pts/0    00:00:00 /bin/bash ./run.sh
+vmadmin     1933    1929  0 10:55 pts/0    00:00:00 /bin/bash /home/vmadmin/actions-runner/run-helper.sh
+vmadmin     1937    1933  1 10:55 pts/0    00:00:02 /home/vmadmin/actions-runner/bin/Runner.Listener run
+vmadmin     2150    1745  0 10:57 pts/0    00:00:00 grep --color=auto run
+vmadmin@linuxvm1g4:~/actions-runner$
+√ Connected to GitHub
+
+Current runner version: '2.328.0'
+2025-09-03 10:58:49Z: Listening for Jobs
+ps -ef|grep run
+root         976       1  0 10:39 ?        00:00:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root        1488    1003  0 10:39 ?        00:00:01 /usr/bin/python3 -u bin/WALinuxAgent-2.14.0.1-py3.12.egg -run-exthandlers
+vmadmin     1929    1745  0 10:55 pts/0    00:00:00 /bin/bash ./run.sh
+vmadmin     1933    1929  0 10:55 pts/0    00:00:00 /bin/bash /home/vmadmin/actions-runner/run-helper.sh
+vmadmin     1937    1933  0 10:55 pts/0    00:00:03 /home/vmadmin/actions-runner/bin/Runner.Listener run
+vmadmin     2182    1745  0 11:02 pts/0    00:00:00 grep --color=auto run
+vmadmin@linuxvm1g4:~/actions-runner$ ps -ef|grep run
+root         976       1  0 10:39 ?        00:00:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root        1488    1003  0 10:39 ?        00:00:01 /usr/bin/python3 -u bin/WALinuxAgent-2.14.0.1-py3.12.egg -run-exthandlers
+vmadmin     1929    1745  0 10:55 pts/0    00:00:00 /bin/bash ./run.sh
+vmadmin     1933    1929  0 10:55 pts/0    00:00:00 /bin/bash /home/vmadmin/actions-runner/run-helper.sh
+vmadmin     1937    1933  0 10:55 pts/0    00:00:03 /home/vmadmin/actions-runner/bin/Runner.Listener run
+vmadmin     2187    1745  0 11:04 pts/0    00:00:00 grep --color=auto run
+vmadmin@linuxvm1g4:~/actions-runner$
+vmadmin@linuxvm1g4:~/actions-runner$ 2025-09-03 11:17:38Z: Running job: firstjob
+2025-09-03 11:17:45Z: Job firstjob completed with result: Succeeded
+2025-09-03 11:19:42Z: Running job: firstjob
+2025-09-03 11:19:49Z: Job firstjob completed with result: Succeeded
+2025-09-03 11:19:51Z: Running job: secondjob
+2025-09-03 11:19:55Z: Job secondjob completed with result: Succeeded
+Connection to 172.185.41.135 closed by remote host.
+Connection to 172.185.41.135 closed.
+PS C:\repos\repo1> ps -ef|grep run
+grep : The term 'grep' is not recognized as the name of a cmdlet, function, script file, or operable
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and
+try again.
+At line:1 char:8
++ ps -ef|grep run
++        ~~~~
+    + CategoryInfo          : ObjectNotFound: (grep:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\repos\repo1> ps -ef|grep run
+grep : The term 'grep' is not recognized as the name of a cmdlet, function, script file, or operable
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and
+try again.
+At line:1 char:8
++ ps -ef|grep run
++        ~~~~
+    + CategoryInfo          : ObjectNotFound: (grep:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\repos\repo1>
+PS C:\repos\repo1>
+
+
+
+
+
+

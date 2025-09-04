@@ -2,7 +2,7 @@ name: firstflow
 on: push
 jobs:
     firstjob:
-        runs-on: linuxvm1g4
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
             - name: welcome message
@@ -15,14 +15,14 @@ jobs:
               run: ./hello.sh
 
     secondjob:
-      runs-on: linuxvm1g4
+      runs-on: ubuntu-latest
       needs: firstjob
       steps:
         - name: echo hello world again
           run: echo "hello world again again"
 
     thirdjob:
-      runs-on: linuxvm1g4
+      runs-on: ubuntu-latest
       needs: secondjob
       steps:
         - name: echo helllo wroedl

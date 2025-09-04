@@ -3,7 +3,7 @@ name: firstflow
 on: push
 jobs:
     firstjob:
-        runs-on: linuxvm1g4
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
             - name: welcome message
