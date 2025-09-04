@@ -14,12 +14,22 @@ jobs:
         run: sudo apt-get update && sudo apt-get install cowsay -y
       - name: Generate ASCII dragon
         run: cowsay -f dragon "Run for cover, I am a DRAGON.... RAWR" >> dragon.txt
+      - name: Upload Dragon tezt file
+        uses: actions/upload-artifact@v3
+        with:
+          name: dration-text-file
+          path: dragon.txt
       - name: Pause for 30 seconds
         run: sleep 30
 
   test_job_2:
     runs-on: ubuntu-latest
+    needs: build_job_1
     steps:
+      - name: Download dragon.txt artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dration-text-file
       - name: Pause for 10 seconds
         run: sleep 10
       - name: Verify dragon.txt
@@ -27,7 +37,12 @@ jobs:
 
   deploy_job_3:
     runs-on: ubuntu-latest
+    needs: test_job_2
     steps:
+      - name: Download dragon.txt artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dration-text-file
       - name: Display dragon.txt
         run: cat dragon.txt
       - name: Simulate deployment
