@@ -1,5 +1,11 @@
 name: my third workflow
-on: push
+on:
+    workflow_dispatch:
+        inputs:
+            loglevel:
+                description: 'Log Level'
+                required: true
+                default: 'warning'
 
 jobs:
   ascii_job:
