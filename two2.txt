@@ -1,1 +1,21 @@
-this is file 2, but there is a copy
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer " \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/gvkul2017-bosch/repo1/actions/jobs/17455670073
+
+
+
+  curl -L -k \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer " \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/gvkul2017-bosch/repo1/actions/jobs/17484320481/logs \
+  -o job_logs.zip
+  
+curl -L -k \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer " \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/gvkul2017-bosch/repo1/actions/runs/17484320481/logs \
+  -o run_logs.zip
