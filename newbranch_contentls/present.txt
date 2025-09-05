@@ -1,1 +1,410 @@
 content is present
+
+
+
+5th Sep:
+----------------
+demo5:
+---------------
+name: Reusable Workflow
+
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        description: "Text to echo"
+        required: false
+        type: string
+    secrets:
+      MY_SECRET:
+        required: true
+
+
+jobs:
+  echo-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show inputs and secrets
+        run: |
+          echo "Msg: ${{ inputs.message }}"
+          echo "Secret: ${{ secrets.MY_SECRET }}"
+		  
+		  
+--------------------------------------------------------
+jobs:
+  call-reusable:
+    uses: owner/repo/.github/workflows/reusable.yml@main
+    with:
+      message: "Hello from parent"
+    secrets:
+      MY_SECRET: ${{ secrets.MY_SECRET }}
+------------------------------------------------------------	
+
+
+
+
+Demo4:
+Repo_dispach:
+----------------------
+
+name: External API Trigger
+
+
+on:
+  repository_dispatch:
+    types: [system_result]
+
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display payload
+        run: echo "Payload: ${{ github.event.client_payload.message }}"
+		
+---------------------------------------------------		
+curl -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  https://api.github.com/repos/<owner>/<repo>/dispatches \
+  -d '{
+    "event_type": "system_result",
+    "client_payload": {
+      "message": "Error: API Timeout"
+    }
+  }'
+
+
+
+Demo3:
+------------
+name: Triggered Workflow with Various Inputs
+on:
+  workflow_dispatch:
+    inputs:
+      run-tests:
+        description: 'Run unit tests'
+        required: false
+        type: boolean
+      test-type:
+        description: 'Type of tests to run'
+        type: choice
+        options:
+          - unit
+          - integration
+          - all
+        required: true
+      environment:
+        description: 'Deployment target'
+        type: environment
+        required: true
+      build-number:
+        description: 'Custom build number'
+        type: number
+        required: false
+      message:
+        description: 'Additional message'
+        type: string
+        required: false
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print workflow inputs
+        run: |
+          echo "Run tests: ${{ inputs.run-tests }}"
+          echo "Test type: ${{ inputs.test-type }}"
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Build number: ${{ inputs.build-number }}"
+          echo "Message: ${{ inputs.message }}"
+
+
+      - name: Run tests (if selected)
+        if: ${{ inputs.run-tests }}
+        run: echo "Running tests..."
+
+
+      # Uncomment to deploy based on the selected environment
+      # - name: Deploy to ${{ inputs.environment }}
+      #   environment: ${{ inputs.environment }}
+      #   run: echo "Deploying to ${{ inputs.environment }}"
+
+
+Demo2:
+----------
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <YOUR_TOKEN>" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/OWNER/REPO/actions/jobs/JOB_ID
+
+curl -L -k \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <YOUR_TOKEN>" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/OWNER/REPO/actions/jobs/JOB_ID/logs \
+  -o job_logs.zip
+  
+curl -L -k \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <YOUR_TOKEN>" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/OWNER/REPO/actions/runs/RUN_ID/logs \
+  -o run_logs.zip
+  
+
+
+
+
+
+Demo1:
+----------
+Sample Workflow: Dumping Contexts:
+
+name: Context testing
+on: push
+
+
+jobs:
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+
+
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+
+
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+
+
+      - name: Dump secrets context
+        env:
+          SECRET_CONTEXT: ${{ toJson(secrets) }}
+        run: echo "$SECRET_CONTEXT"
+
+
+
+
+
+4th Sep:;
+------------
+
+
+Lab:
+-----------
+https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/Instructions/Labs/AZ400_M02_L05_Implement_GitHub_Actions_for_CI_CD.md
+
+
+
+
+57  rm -rf .git
+   58  rm -rf .github/
+   59  rm -f CHANGELOG.md
+   60  ls -al
+   61  rm -rf .devcontainer/
+   62  ls -al
+   63  git status
+   64  git init
+   65  git config --global init.defaultBranch master
+   66  git status
+   67  git add .
+   68  git commit -m C1
+   69  git status
+   70  git log
+   71  git remote -v
+   72  git remote add origin https://github.com/cloudtechlab/repo3.git
+   73  git remote -v
+   
+   75  git push origin master
+
+
+
+
+-------------------------------
+ 37  cd ~
+   38  python3 --version
+   39  python3 -m venv demoenv
+   40  sudo apt install python3.12-venv
+   41  clear
+   42  python3 -m venv demoenv
+   43  ls
+   44  source ~/demoenv/bin/activate
+   45  git clone https://github.com/Azure-Samples/msdocs-python-flask-webapp-quickstart
+   46  ls
+   47  cd msdocs-python-flask-webapp-quickstart/
+   48  ls
+   49  ls -ltr
+   50  python3 app.py
+   51  pip install -r requirements.txt
+   52  python3 app.py
+
+
+
+URL:
+-------
+https://learn.microsoft.com/en-us/azure/app-service/quickstart-python?tabs=flask%2Cwindows%2Cazure-cli%2Cazure-cli-deploy%2Cdeploy-instructions-azportal%2Cterminal-bash%2Cdeploy-instructions-zip-azcli
+
+
+Demo3
+--------
+on:
+  push:
+  workflow_dispatch:
+
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-20.04, windows-latest]
+        image: [hello-world, alpine]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Echo Docker Details
+        run: docker info
+
+
+      - name: Run ${{ matrix.image }} on ${{ matrix.os }}
+        run: docker run ${{ matrix.image }}
+
+Demo2:
+----------
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: step1
+        env:
+          stepVar1: stepvalue1
+        run: |
+          echo "The value for stepvar1: $stepVar1"
+
+
+
+
+Demo1:
+-----------
+Demo2: multi-Job
+---------
+# .github/workflows/generate-ascii.yml
+name: Generate ASCII Artwork
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build_job_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+
+      - name: Install cowsay
+        run: sudo apt-get update && sudo apt-get install cowsay -y
+
+
+      - name: Generate ASCII dragon
+        run: cowsay -f dragon "Run for cover, I am a DRAGON.... RAWR" >> dragon.txt
+
+
+      - name: Pause for 30 seconds
+        run: sleep 30
+
+
+  test_job_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pause for 10 seconds
+        run: sleep 10
+
+
+      - name: Verify dragon.txt
+        run: grep -i "dragon" dragon.txt
+
+
+  deploy_job_3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display dragon.txt
+        run: cat dragon.txt
+
+
+      - name: Simulate deployment
+        run: echo "Deploying dragon.txt..."
+
+
+
+
+
+
+
+
+
+
+2nd Sep:
+----------------
+https://st1trainer.blob.core.windows.net/con1/AZ-900T00A-ENU-TrainerHandbook.pdf
+
+https://st1trainer.blob.core.windows.net/con1/AZ-104T00A-ENU-TrainerHandbook.pdf
+
+
+
+
+
+
+
+
+
+
+1st Sep:
+----------
+VSCode Download:
+---------------------
+https://code.visualstudio.com/download#
+
+
+Azure Powershell:
+---------------------------
+Set-ExecutionPolicy Unrestricted
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-Module -Name az -AllowClobber
+
+Azure CLI Download:
+---------------------------
+https://aka.ms/installazurecliwindowsx64
+
+Git.exe Download:
+-------------------------
+https://github.com/git-for-windows/git/releases/download/v2.51.0.windows.1/Git-2.51.0-64-bit.exe
+
+
+Pre-Test:
+-----------
+https://matst1race123.blob.core.windows.net/con1/Pre-quiz.docx
+
+Vmadminbala11
+
+ 

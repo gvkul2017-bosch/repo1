@@ -1,14 +1,12 @@
-name: External API Trigger
+name: BUILD_WORKFLOW_DEMO
 
 
 on:
-  repository_dispatch:
-    types: [system_result]
+  workflow_dispatch:
 
 
 jobs:
-  report:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Display payload
-        run: echo "Payload: ${{ github.event.client_payload.message }}"
+      - run: echo "Build completed successfully"
